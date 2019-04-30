@@ -1,0 +1,22 @@
+- name: Basic http service using as3
+  hosts: localhost
+  connection: local
+  gather_facts: no 
+
+  vars_files: 
+    - ../creds/bigipcreads.yaml
+
+  vars:
+    uri_method: POST
+    
+
+  - name: Issue AS3 Declaration
+    uri:
+      url: https://3.9.55.160/mgmt/shared/appsvcs/declare
+      method: "{{uri_method}}" 
+      user: "{{bigip_user}}"
+      password: "{{bigip_pass}}"
+      body: "{{ lookup('file','./automation_workshop/declarations/simplehtt.json') }}"
+      force_basic_auth: yes
+      status_code: 201
+      body_format: json
